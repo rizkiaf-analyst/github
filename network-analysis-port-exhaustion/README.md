@@ -115,12 +115,12 @@ Based on testing with 20,000 requests and 500 threads:
 - **Success Rate:** 63.5% (12,695 Requests)
 - **Error Rate:** 36.5% (7,305 Requests)
 - **Observed RPS:** 290.38 req/sec
-![Test Results](evidence/logs/VM-HAPROXY/test_results.txt)
+[Test Results](evidence/logs/VM-HAPROXY/test_results.txt)
 
 ## Stats Logs
-![Stats Before Test](evidence/logs/VM-HAPROXY/stats_before.txt)
-![Stats While Test](evidence/logs/VM-HAPROXY/stats_peak.txt)
-![Stats After Test](evidence/logs/VM-HAPROXY/stats_after.txt)
+[Stats Before Test](evidence/logs/VM-HAPROXY/stats_before.txt)
+[Stats While Test](evidence/logs/VM-HAPROXY/stats_peak.txt)
+[Stats After Test](evidence/logs/VM-HAPROXY/stats_after.txt)
 
 
 ---
