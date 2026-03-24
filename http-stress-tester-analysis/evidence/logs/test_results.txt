@@ -1,0 +1,12 @@
+[*] Start 20000 request to http://192.168.8.118
+[*] Using 500 Thread...
+
+===================================
+         SUMMARY REPORT
+===================================
+Total Times    : 43.72 detik
+Thread Used    : 500
+Success (200) : 12695
+Fail/Error    : 7305
+RPS (Success)  : 290.38 req/sec
+===================================

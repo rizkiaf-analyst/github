@@ -1,0 +1,19 @@
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    environment:
+      - SERVER_NAME=VM1
+    restart: always
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+    restart: always
