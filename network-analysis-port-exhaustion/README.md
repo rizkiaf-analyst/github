@@ -125,6 +125,7 @@ Based on testing with 20,000 requests and 500 threads:
 ### Forensic Analysis: Ephemeral Port Exhaustion
 
 **Trigger Point: Traffic Spike & CPU**
+![CPU VM-HAPROXY](evidence/screenshots/VM-HAPROXY/CPU_VM-HAPROXY.jpg)
 
 During the stress test (20:56 - 20:58), when incoming traffic peaked (~4 Mb/s), CPU on VM-HAProxy immediately spiked to 100% (Busy System/User). This proves that HAProxy was working extremely hard processing TCP handshakes from 500 threads.
 
