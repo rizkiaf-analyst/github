@@ -115,6 +115,13 @@ Based on testing with 20,000 requests and 500 threads:
 - **Success Rate:** 63.5% (12,695 Requests)
 - **Error Rate:** 36.5% (7,305 Requests)
 - **Observed RPS:** 290.38 req/sec
+![Test Results](evidence/logs/VM-HAPROXY/test_results.txt)
+
+## Stats Logs
+![Stats Before Test](evidence/logs/VM-HAPROXY/stats_before.txt)
+![Stats While Test](evidence/logs/VM-HAPROXY/stats_peak.txt)
+![Stats After Test](evidence/logs/VM-HAPROXY/stats_after.txt)
+
 
 ---
 
@@ -130,14 +137,17 @@ Based on testing with 20,000 requests and 500 threads:
 During the stress test (20:56 - 20:58), when incoming traffic peaked (~4 Mb/s), CPU on VM-HAProxy immediately spiked to 100% (Busy System/User). This proves that HAProxy was working extremely hard processing TCP handshakes from 500 threads.
 
 **Primary Evidence (Ephemeral Port Exhaustion)**
+![SOCKSTAT VM-HAPROXY](evidence/screenshots/VM-HAPROXY/SOCKSTAT_TCP_VM-HAPROXY.jpg)
 
 When CPU hit 100%, the number of TIME_WAIT Sockets spiked sharply to **2.05K**. This is direct evidence of Ephemeral Port Exhaustion — HAProxy ran out of port numbers to open new connections to the web servers because old ports were still stuck in TIME_WAIT status.
 
 **Fatal Impact: RST Sent & Timeouts**
+![TCP ERRORS VM-HAPROXY](evidence/screenshots/VM-HAPROXY/TCP_ERRORS_VM-HAPROXY.jpg)
 
 When ports were exhausted, the system began sending **RST Sent (600 mp/s)** and experiencing **TCP Timeouts (267 mp/s)**. Because no ports were available, the kernel forcefully rejected new connections (Reset). This is what caused the 502/504 errors on the Python script side.
 
 **Negative Evidence: RAM Was Not the Cause**
+![RAM VM-HAPROXY](evidence/screenshots/VM-HAPROXY/RAM_HM-HAPROXY.jpg)
 
 Despite 100% CPU and network errors, RAM remained flat and stable at 128 MiB. This confirms that the issue was purely from the Network Stack — memory was not a limiting factor.
 
@@ -152,11 +162,11 @@ The core issue was the massive number of connections (500 threads) requiring HAP
 ### VM1
 
 **Network**
-
+![NETWORK VM1](evidence/screenshots/VM1/RAM_HM1.jpg)
 VM1 showed a traffic pattern identical to HAProxy (Weight 80%), proving that the Load Balancing mechanism was working correctly before the system eventually collapsed.
 
 **CPU**
-
+![CPU VM1](evidence/screenshots/VM1/CPU_VM1.jpg)
 The most critical comparison:
 - **CPU HAProxy:** Maxed at 100%, dominated by orange/brown color (Busy System/IRQs) — CPU was exhausted handling kernel networking
 - **CPU VM1:** Only reached ~70-75%
@@ -164,7 +174,7 @@ The most critical comparison:
 **Conclusion:** The web server (VM1) still had headroom, but HAProxy was no longer capable of forwarding packets to VM1.
 
 **TIME_WAIT & TCP Errors**
-
+![TCP ERRORS VM1](evidence/screenshots/VM1/TCP_ERRORS_VM1.jpg)
 - **HAProxy:** TIME_WAIT count spiked drastically to 2.05K — the primary cause of 502/504 errors
 - **VM1:** TIME_WAIT remained at 0 or very low (only Allocated Sockets increased slightly to ~60)
 
