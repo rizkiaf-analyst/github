@@ -163,7 +163,7 @@ The core issue was the massive number of connections (500 threads) requiring HAP
 ### VM1
 
 **Network**
-![NETWORK VM1](evidence/screenshots/VM1/NETWORK_HM1.jpg)
+![NETWORK VM1](evidence/screenshots/VM1/NETWORK_VM1.jpg)
 VM1 showed a traffic pattern identical to HAProxy (Weight 80%), proving that the Load Balancing mechanism was working correctly before the system eventually collapsed.
 
 **CPU**
