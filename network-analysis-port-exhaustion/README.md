@@ -163,7 +163,7 @@ The core issue was the massive number of connections (500 threads) requiring HAP
 ### VM1
 
 **Network**
-![NETWORK VM1](evidence/screenshots/VM1/RAM_HM1.jpg)
+![NETWORK VM1](evidence/screenshots/VM1/NETWORK_HM1.jpg)
 VM1 showed a traffic pattern identical to HAProxy (Weight 80%), proving that the Load Balancing mechanism was working correctly before the system eventually collapsed.
 
 **CPU**
@@ -174,8 +174,10 @@ The most critical comparison:
 
 **Conclusion:** The web server (VM1) still had headroom, but HAProxy was no longer capable of forwarding packets to VM1.
 
-**TIME_WAIT & TCP Errors**
+**SOCKSTAT TCP**
+![SOCKSTAT TCP VM1](evidence/screenshots/VM1/SOCKSTAT_TCP_VM1.jpg)
 ![TCP ERRORS VM1](evidence/screenshots/VM1/TCP_ERRORS_VM1.jpg)
+
 - **HAProxy:** TIME_WAIT count spiked drastically to 2.05K — the primary cause of 502/504 errors
 - **VM1:** TIME_WAIT remained at 0 or very low (only Allocated Sockets increased slightly to ~60)
 
